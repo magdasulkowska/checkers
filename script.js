@@ -21,7 +21,12 @@ function select(element)
 
     else 
     {
-        alert("Alert: Kliknięto miejsce bez pionka.");
+        if(selectedElement != null) 
+        {
+            element.appendChild(selectedElement.childNodes[0]);
+            selectedElement.style.backgroundColor="black";
+            selectedElement = null;
+        }
     }
  }
 
