@@ -1,32 +1,39 @@
 var selectedElement = null;
+var currentPlayer = 'white';
 
-
-function select(element)
+function select(element) 
 {
-    if(selectedElement != null) 
+    if (selectedElement == null) 
     {
-        selectedElement.style.backgroundColor="black";
-    }
-
-    if(selectedElement == element)
-    {
-        selectedElement = null;
-    }
-
-    if (element.querySelector("img[src]"))
-    {
-        element.style.backgroundColor="grey";
-        selectedElement = element;
-    }
-
-    else 
-    {
-        if(selectedElement != null) 
+        if (element.querySelector("img[src]") && element.querySelector("img[src]").alt.includes(currentPlayer)) 
         {
-            element.appendChild(selectedElement.childNodes[0]);
-            selectedElement.style.backgroundColor="black";
-            selectedElement = null;
+            element.style.backgroundColor = "grey";
+            selectedElement = element;
         }
     }
- }
+     else if (element == selectedElement) 
+    
+    {
+        selectedElement.style.backgroundColor = "black";
+        selectedElement = null;
+    } 
+    else if (element.querySelector("img[src]") && element.querySelector("img[src]").alt != (currentPlayer)) 
+    {
+        return;
+    }
+     else 
+    {
+        element.appendChild(selectedElement.querySelector("img[src]"));
+        selectedElement.style.backgroundColor = "black";
+        selectedElement = null;
 
+        if (currentPlayer == 'white') 
+        {
+            currentPlayer = 'black';
+        } 
+        else
+        {
+            currentPlayer = 'white';
+        }
+    }
+}
