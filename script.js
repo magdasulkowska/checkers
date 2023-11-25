@@ -36,12 +36,15 @@ function select(element)
     {
         makeMoveIfGood(element)
     }
-    else if(canDeletOpponent(element))
-    {
+    else
+    { 
+        if(canDeleteLeftRight(element) || canDeleteOnEvenRow(element) || canDeleteOnOddRow(element) || canDeleteOnEvenRowEvenColumn(element) || canDeleteOnOddRowOddColumn(element) || canDeleteOnOddRowEvenColumn(element) || canDeleteOnEvenRowOddColumn(element) || canDeleteByColor(element)) 
+        {
+        movePieceToNewLocation(element)
         deleteOpponent(element);
+        }
     }
 }
-
 
 
 function isAnyElementSelected()
@@ -88,7 +91,7 @@ function makeMoveIfGood(element)
             movePieceToNewLocation(element)
         }
         else if (currentPlayer == 2 && selectedElement.dataset.y == parseInt(element.dataset.y) -1)
-        {
+        {  
             movePieceToNewLocation(element)
         }
 }
@@ -111,26 +114,54 @@ function movePieceToNewLocation(element)
     currentPlayer = 3 - currentPlayer;
 }
 
-
-function canDeletOpponent(element) 
+function canDeleteLeftRight(element) 
 {
-    var againstPlayer = 3 - currentPlayer;
-    var step = 2 - currentPlayer;
-    var targetY = parseInt(selectedElement.dataset.y) + step;
-    var targetXLeft = parseInt(selectedElement.dataset.x) - 1;
-    var targetXRight = parseInt(selectedElement.dataset.x) + 1;
-
-    function isCorrectCoordinate(y, x) 
-    {
-        return y >= 0 && y < chessboard.length && x >= 0 && x < chessboard[0].length;
-    }
-
-    return (isCorrectCoordinate(targetY + step, targetXLeft) && chessboard[targetY + step][targetXLeft] == againstPlayer || isCorrectCoordinate(targetY + step, targetXRight) && chessboard[targetY + step][targetXRight] == againstPlayer);
+    return Math.abs(selectedElement.dataset.x - element.dataset.x) == 1 && Math.abs(selectedElement.dataset.y - element.dataset.y) == 0;
 }
 
-function deleteOpponent(element)
+function canDeleteOnEvenRow(element) 
 {
+    return selectedElement.dataset.y % 2 == 0 && element.dataset.x == selectedElement.dataset.x - 1;
+}
 
+function canDeleteOnOddRow(element) 
+{
+    return !(isEvenRow = selectedElement.dataset.y % 2 == 0) && element.dataset.x == parseInt(selectedElement.dataset.x) + 1;
+}
+
+function canDeleteOnEvenRowEvenColumn(element) 
+{
+    return selectedElement.dataset.y % 2 == 0 && element.dataset.x % 2 == 0 && canDeleteLeftRight(element);
+}
+
+function canDeleteOnOddRowOddColumn(element) 
+{
+    return !(selectedElement.dataset.y % 2 == 0) && element.dataset.x % 2 !== 0 && canDeleteLeftRight(element);
+}
+
+function canDeleteOnOddRowEvenColumn(element) 
+{
+    return !(selectedElement.dataset.y % 2 == 0) && element.dataset.x % 2 == 0 && canDeleteLeftRight(element);
+}
+
+function canDeleteOnEvenRowOddColumn(element) 
+{
+    return selectedElement.dataset.y % 2 == 0 && element.dataset.x % 2 !== 0 && canDeleteLeftRight(element);
+}
+
+function canDeleteByColor(element) 
+{
+    const currentPlayerPawnColor = (currentPlayer == 1) ? 'white' : 'black';
+    const opponentPawnColor = (currentPlayer == 1) ? 'black' : 'white';
+    const isOpponentColor = element.querySelector(`img[src*=${opponentPawnColor}]`);
+    return isOpponentColor;
+}
+
+function deleteOpponent(x, y)
+{
+    var field = document.querySelector('td[data-x="'+ x + '"][data-y="'+ y +'"]');
+
+    field.querySelector('img').remove()
 }
 
 
