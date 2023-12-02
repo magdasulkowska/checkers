@@ -40,8 +40,59 @@ function select(element)
     { 
         if(canDeleteLeftRight(element) || canDeleteOnEvenRow(element) || canDeleteOnOddRow(element) || canDeleteOnEvenRowEvenColumn(element) || canDeleteOnOddRowOddColumn(element) || canDeleteOnOddRowEvenColumn(element) || canDeleteOnEvenRowOddColumn(element) || canDeleteByColor(element)) 
         {
+        if (currentPlayer == 1)
+        {
+           if (selectedElement.dataset.y % 2 == 0)
+           {
+            if (selectedElement.dataset.x - element.dataset.x == 1)
+            {
+                deleteOpponent(selectedElement.dataset.x - 1, selectedElement.dataset.y - 1);
+            }
+            else
+            {
+                deleteOpponent(selectedElement.dataset.x, selectedElement.dataset.y - 1);
+            }
+           }
+           else
+           {
+            if (selectedElement.dataset.x - element.dataset.x == 1)
+            {
+                deleteOpponent(selectedElement.dataset.x, selectedElement.dataset.y - 1);
+            }
+            else
+            {
+                deleteOpponent(selectedElement.dataset.x + 1, selectedElement.dataset.y - 1);
+            }
+           }
+           
+        }
+        else
+        {
+            if (selectedElement.dataset.y % 2 == 0)
+           {
+            if (selectedElement.dataset.x - element.dataset.x == 1)
+            {
+                deleteOpponent(selectedElement.dataset.x - 1, selectedElement.dataset.y + 1);
+            }
+            else
+            {
+                deleteOpponent(selectedElement.dataset.x, selectedElement.dataset.y + 1);
+            }
+           }
+           else
+           {
+            if (selectedElement.dataset.x - element.dataset.x == 1)
+            {
+                deleteOpponent(selectedElement.dataset.x, selectedElement.dataset.y + 1);
+            }
+            else
+            {
+                deleteOpponent(selectedElement.dataset.x + 1, selectedElement.dataset.y + 1);
+            }
+           }
+        }
         movePieceToNewLocation(element)
-        deleteOpponent(element);
+        
         }
     }
 }
@@ -116,7 +167,14 @@ function movePieceToNewLocation(element)
 
 function canDeleteLeftRight(element) 
 {
-    return Math.abs(selectedElement.dataset.x - element.dataset.x) == 1 && Math.abs(selectedElement.dataset.y - element.dataset.y) == 0;
+    if (currentPlayer == 1) 
+    {
+        return (Math.abs(selectedElement.dataset.x - element.dataset.x) == 1 && Math.abs(selectedElement.dataset.y - element.dataset.y) == 2)  && element.dataset.y < selectedElement.dataset.y;
+    } 
+    else 
+    {
+        return (Math.abs(selectedElement.dataset.x - element.dataset.x) == 1 && Math.abs(selectedElement.dataset.y - element.dataset.y) == 2) && element.dataset.y > selectedElement.dataset.y;
+    }
 }
 
 function canDeleteOnEvenRow(element) 
@@ -126,7 +184,7 @@ function canDeleteOnEvenRow(element)
 
 function canDeleteOnOddRow(element) 
 {
-    return !(isEvenRow = selectedElement.dataset.y % 2 == 0) && element.dataset.x == parseInt(selectedElement.dataset.x) + 1;
+    return !(selectedElement.dataset.y % 2 == 0) && element.dataset.x == parseInt(selectedElement.dataset.x) + 1; 
 }
 
 function canDeleteOnEvenRowEvenColumn(element) 
@@ -164,7 +222,71 @@ function deleteOpponent(x, y)
     field.querySelector('img').remove()
 }
 
+function isGameOver() 
+{
+    if (areAllOpponentPawnsDeleted()) 
+    {
+        alert("Koniec gry! Zbiłeś wszystkie pionki przeciwnika.");
+        return true;
+    }
 
+    let allOpponentPawnBlocked = true;
 
+    for (let i = 0; i < 8; i++) 
+    {
+        for (let j = 0; j < 4; j++) 
+        {
+            if (chessboard[i][j] == 3 - currentPlayer) 
+            {
+                if (!isPawnBlocked(j, i)) 
+                {
+                    allOpponentPawnBlocked = false;
+                    break;
+                }
+            }
+        }
+        if (!allOpponentPawnBlocked) 
+        {
+            break;
+        }
+    }
 
+    if (allOpponentPawnBlocked) 
+    {
+        alert("Koniec gry! Wszystkie pionki przeciwnika są zablokowane.");
+        return true;
+    }
 
+    return false;
+}
+
+function areAllOpponentPawnsDeleted() 
+{
+    for (let i = 0; i < chessboard.length; i++) 
+    {
+        for (let j = 0; j < chessboard[i].length; j++) 
+        {
+            if (chessboard[i][j] == 3 - currentPlayer) 
+            {
+                return false; 
+            }
+        }
+    return true;
+}
+
+function isPawnBlocked(x, y) 
+{
+    if((y % 2 == 0 && x > 0 && chessboard[y - 1][x - 1] == 0) ||
+    (y % 2 == 0 && x > 0 && chessboard[y - 1][x + 1] == 0) ||
+     (y % 2 == 1 && x < 3 && chessboard[y - 1][x + 1] == 0) ||
+     (y % 2 == 1 && x < 3 && chessboard[y - 1][x - 1] == 0) ||
+     (y % 2 == 0 && x > 0 && chessboard[y + 1][x - 1] == 0) ||
+     (y % 2 == 0 && x > 0 && chessboard[y + 1][x + 1] == 0) ||
+      (y % 2 == 1 && x < 3 && chessboard[y + 1][x + 1] == 0) ||
+      (y % 2 == 1 && x < 3 && chessboard[y + 1][x - 1] == 0))
+    {
+        return false; 
+    }
+         return true; 
+    }
+}
