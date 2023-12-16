@@ -31,10 +31,12 @@ function select(element)
      else if(isGoodMoveForOddRow(element))
     {
         makeMoveIfGood(element)
+        isGameOver()
     }
     else if (isGoodMoveForEvenRow(element))
     {
         makeMoveIfGood(element)
+        isGameOver()
     }
     else
     { 
@@ -46,25 +48,47 @@ function select(element)
            {
             if (selectedElement.dataset.x - element.dataset.x == 1)
             {
-                deleteOpponent(selectedElement.dataset.x - 1, selectedElement.dataset.y - 1);
+                if (selectedElement.dataset.y - element.dataset.y == 2)
+                {
+                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) - 1);
+                    isGameOver()
+                }
+                else
+                {
+                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) + 1);
+                    isGameOver()
+            
+                }
+               
             }
             else
             {
-                deleteOpponent(selectedElement.dataset.x, selectedElement.dataset.y - 1);
+                deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) - 1);
+                isGameOver()
             }
            }
            else
            {
             if (selectedElement.dataset.x - element.dataset.x == 1)
             {
-                deleteOpponent(selectedElement.dataset.x, selectedElement.dataset.y - 1);
+                if (selectedElement.dataset.y - element.dataset.y == 2)
+            {
+                deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) - 1);
+                isGameOver()
             }
             else
             {
-                deleteOpponent(selectedElement.dataset.x + 1, selectedElement.dataset.y - 1);
+                deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) + 1);
+                isGameOver()
             }
            }
-           
+           else
+                {
+                    deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) - 1);
+                    isGameOver()
+            
+                }   
+           }
         }
         else
         {
@@ -72,27 +96,49 @@ function select(element)
            {
             if (selectedElement.dataset.x - element.dataset.x == 1)
             {
-                deleteOpponent(selectedElement.dataset.x - 1, selectedElement.dataset.y + 1);
+                if (selectedElement.dataset.y - element.dataset.y == 2)
+                {
+                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) + 1);
+                    isGameOver()
+                }
+                else
+                {
+                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) - 1);
+                    isGameOver()
+            
+                }
+               
             }
             else
             {
-                deleteOpponent(selectedElement.dataset.x, selectedElement.dataset.y + 1);
+                deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) + 1);
+                isGameOver()
             }
            }
            else
            {
             if (selectedElement.dataset.x - element.dataset.x == 1)
             {
-                deleteOpponent(selectedElement.dataset.x, selectedElement.dataset.y + 1);
+                if (selectedElement.dataset.y - element.dataset.y == 2)
+            {
+                deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) + 1);
+                isGameOver()
             }
             else
             {
-                deleteOpponent(selectedElement.dataset.x + 1, selectedElement.dataset.y + 1);
+                deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) + 1);
+                isGameOver()
             }
            }
+           else 
+           {
+            deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) - 1);
+            isGameOver()
+           }
         }
+    }
         movePieceToNewLocation(element)
-        
+        isGameOver()
         }
     }
 }
@@ -149,7 +195,7 @@ function makeMoveIfGood(element)
 
 function isGoodMoveForEvenRow(element)
 {
-    return selectedElement.dataset.y % 2==0 && (selectedElement.dataset.x == element.dataset.x || element.dataset.x == parseInt(selectedElement.dataset.x) -1)
+    return selectedElement.dataset.y % 2==0 && (selectedElement.dataset.x == element.dataset.x || element.dataset.x == parseInt(selectedElement.dataset.x) -1 ) && (Math.abs(selectedElement.dataset.y - element.dataset.y) == 1)
 }
 
 function movePieceToNewLocation(element)
@@ -169,11 +215,11 @@ function canDeleteLeftRight(element)
 {
     if (currentPlayer == 1) 
     {
-        return (Math.abs(selectedElement.dataset.x - element.dataset.x) == 1 && Math.abs(selectedElement.dataset.y - element.dataset.y) == 2)  && element.dataset.y < selectedElement.dataset.y;
+        return (Math.abs(selectedElement.dataset.x - element.dataset.x) == 1 && Math.abs(selectedElement.dataset.y - element.dataset.y) == 2);
     } 
     else 
     {
-        return (Math.abs(selectedElement.dataset.x - element.dataset.x) == 1 && Math.abs(selectedElement.dataset.y - element.dataset.y) == 2) && element.dataset.y > selectedElement.dataset.y;
+        return (Math.abs(selectedElement.dataset.x - element.dataset.x) == 1 && Math.abs(selectedElement.dataset.y - element.dataset.y) == 2);
     }
 }
 
@@ -219,74 +265,85 @@ function deleteOpponent(x, y)
 {
     var field = document.querySelector('td[data-x="'+ x + '"][data-y="'+ y +'"]');
 
-    field.querySelector('img').remove()
+    field.querySelector('img').remove();
+
+    chessboard[y][x] = 0;
 }
 
 function isGameOver() 
 {
-    if (areAllOpponentPawnsDeleted()) 
+    var player1 = 0;
+    var player2 = 0;
+    var makeMovePlayer1 = 0;
+    var makeMovePlayer2 = 0;
+
+    for (var y = 0; y < chessboard.length; y++) 
     {
-        alert("Koniec gry! Zbiłeś wszystkie pionki przeciwnika.");
+        for (var x = 0; x < chessboard[y].length; x++) 
+        {
+            if (chessboard[y][x] == 1) 
+            {
+                player1++;
+                makeMovePlayer1 += checkMove(x, y, 1);
+            } 
+            else if (chessboard[y][x] == 2) 
+            {
+                player2++;
+                makeMovePlayer2 += checkMove(x, y, 2);
+            }
+        }
+    }
+
+    if (player1 == 0 || player2 == 0) 
+    {
+        alert("Koniec gry: Wszystkie pionki jednego z graczy zostały zbite.");
         return true;
     }
 
-    let allOpponentPawnBlocked = true;
-
-    for (let i = 0; i < 8; i++) 
+    if ((currentPlayer == 1 && makeMovePlayer1 == 0) || (currentPlayer == 2 && makeMovePlayer2 == 0)) 
     {
-        for (let j = 0; j < 4; j++) 
+        alert("Koniec gry: Gracz " + currentPlayer + " nie ma dostępnych ruchów.");
+        return true; 
+    }
+    return false; 
+}
+
+
+function checkMove(x, y, player) 
+{
+    var makeMove = 0;
+
+    if (player == 1) 
+    {
+        if (y > 0) 
         {
-            if (chessboard[i][j] == 3 - currentPlayer) 
+            if (y % 2 == 0) 
             {
-                if (!isPawnBlocked(j, i)) 
-                {
-                    allOpponentPawnBlocked = false;
-                    break;
-                }
+                if (x > 0 && chessboard[y - 1][x - 1] == 0) makeMove++; //parzysty - lewo 
+                if (x < chessboard[y].length - 1 && chessboard[y - 1][x] == 0) makeMove++; //parzysty - prawo
+            } 
+            else 
+            {
+                if (x > 0 && chessboard[y - 1][x] == 0) makeMove++; // nieparzysty - lewo
+                if (x < chessboard[y].length - 1 && chessboard[y - 1][x + 1] == 0) makeMove++; // nieparzysty - prawo
             }
         }
-        if (!allOpponentPawnBlocked) 
-        {
-            break;
-        }
-    }
-
-    if (allOpponentPawnBlocked) 
+    } else 
     {
-        alert("Koniec gry! Wszystkie pionki przeciwnika są zablokowane.");
-        return true;
-    }
-
-    return false;
-}
-
-function areAllOpponentPawnsDeleted() 
-{
-    for (let i = 0; i < chessboard.length; i++) 
-    {
-        for (let j = 0; j < chessboard[i].length; j++) 
+        if (y < chessboard.length - 1) 
         {
-            if (chessboard[i][j] == 3 - currentPlayer) 
+            if (y % 2 == 0) 
             {
-                return false; 
+                if (x < chessboard[y].length - 1 && chessboard[y + 1][x] == 0) makeMove++; // parzystyw - prawo
+                if (x > 0 && chessboard[y + 1][x - 1] == 0) makeMove++; // parzysty - lewo
+            } 
+            else 
+            {
+                if (x < chessboard[y].length - 1 && chessboard[y + 1][x + 1] == 0) makeMove++; //nieparzysty - prawo
+                if (x > 0 && chessboard[y + 1][x] == 0) makeMove++; // nieparzysty - lewo
             }
         }
-    return true;
+    }
+    return makeMove;
 }
 
-function isPawnBlocked(x, y) 
-{
-    if((y % 2 == 0 && x > 0 && chessboard[y - 1][x - 1] == 0) ||
-    (y % 2 == 0 && x > 0 && chessboard[y - 1][x + 1] == 0) ||
-     (y % 2 == 1 && x < 3 && chessboard[y - 1][x + 1] == 0) ||
-     (y % 2 == 1 && x < 3 && chessboard[y - 1][x - 1] == 0) ||
-     (y % 2 == 0 && x > 0 && chessboard[y + 1][x - 1] == 0) ||
-     (y % 2 == 0 && x > 0 && chessboard[y + 1][x + 1] == 0) ||
-      (y % 2 == 1 && x < 3 && chessboard[y + 1][x + 1] == 0) ||
-      (y % 2 == 1 && x < 3 && chessboard[y + 1][x - 1] == 0))
-    {
-        return false; 
-    }
-         return true; 
-    }
-}
