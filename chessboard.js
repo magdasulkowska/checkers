@@ -24,12 +24,12 @@ class Chessboard
     {
         const pawn = this.getPawn(x, y);
         this.board[newY][newX] = pawn;
-        this.board[y][x] = 0;
+        this.board[y][x] = null;
     }
 
     removePawn(x, y)
     {
-        this.board[y][x] = 0;
+        this.board[y][x] = null;
     }
 
     isGameOver() 
