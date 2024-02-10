@@ -63,8 +63,17 @@ function select(element)
             }
             else
             {
-                deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) - 1);
-                isGameOver()
+                if (selectedElement.dataset.y - element.dataset.y == 2)
+                {
+                    deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) - 1);
+                    isGameOver()
+                }
+                else
+                {
+                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) + 1);
+                    isGameOver()
+            
+                }
             }
            }
            else
@@ -78,15 +87,22 @@ function select(element)
             }
             else
             {
-                deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) + 1);
+                deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) + 1);
                 isGameOver()
             }
            }
            else
                 {
-                    deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) - 1);
-                    isGameOver()
-            
+                    if (selectedElement.dataset.y - element.dataset.y == 2)
+                    {
+                        deleteOpponent(parseInt(selectedElement.dataset.x) +1, parseInt(selectedElement.dataset.y) - 1);
+                        isGameOver()
+                    }
+                    else
+                    {
+                        deleteOpponent(parseInt(selectedElement.dataset.x) +1, parseInt(selectedElement.dataset.y) + 1);
+                        isGameOver()
+                    }  
                 }   
            }
         }
@@ -98,12 +114,12 @@ function select(element)
             {
                 if (selectedElement.dataset.y - element.dataset.y == 2)
                 {
-                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) + 1);
+                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) - 1);
                     isGameOver()
                 }
                 else
                 {
-                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) - 1);
+                    deleteOpponent(parseInt(selectedElement.dataset.x) - 1, parseInt(selectedElement.dataset.y) + 1);
                     isGameOver()
             
                 }
@@ -117,7 +133,7 @@ function select(element)
            }
            else
            {
-            if (selectedElement.dataset.x - element.dataset.x == 1)
+            if  (selectedElement.dataset.x - element.dataset.x == 1)
             {
                 if (selectedElement.dataset.y - element.dataset.y == 2)
             {
@@ -126,16 +142,25 @@ function select(element)
             }
             else
             {
-                deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) + 1);
+                deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) + 1);
                 isGameOver()
             }
            }
            else 
            {
-            deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) - 1);
-            isGameOver()
+            if (selectedElement.dataset.y - element.dataset.y == 2)
+            {
+                deleteOpponent(selectedElement.dataset.x, parseInt(selectedElement.dataset.y) - 1);
+                isGameOver()
+            }
+            else
+            {
+                deleteOpponent(parseInt(selectedElement.dataset.x) + 1, parseInt(selectedElement.dataset.y) + 1);
+                isGameOver()
+            
            }
         }
+    }
     }
         movePieceToNewLocation(element)
         isGameOver()
@@ -178,7 +203,7 @@ function containsPawn(element)
 
 function isGoodMoveForOddRow(element)
 {
-   return selectedElement.dataset.y % 2>0 && (selectedElement.dataset.x == element.dataset.x || element.dataset.x == parseInt(selectedElement.dataset.x) +1)
+   return selectedElement.dataset.y % 2>0 && (selectedElement.dataset.x == element.dataset.x || element.dataset.x == parseInt(selectedElement.dataset.x) +1) && (Math.abs(selectedElement.dataset.y - element.dataset.y) == 1)
 }
 
 function makeMoveIfGood(element)
@@ -296,18 +321,17 @@ function isGameOver()
 
     if (player1 == 0 || player2 == 0) 
     {
-        alert("Koniec gry: Wszystkie pionki jednego z graczy zostały zbite.");
+        alert("Koniec gry: Wszystkie pionki jednego z graczy zostaly zbite.");
         return true;
     }
 
     if ((currentPlayer == 1 && makeMovePlayer1 == 0) || (currentPlayer == 2 && makeMovePlayer2 == 0)) 
     {
-        alert("Koniec gry: Gracz " + currentPlayer + " nie ma dostępnych ruchów.");
+        alert("Koniec gry: Gracz " + currentPlayer + " nie ma dostepnych ruchow.");
         return true; 
     }
     return false; 
 }
-
 
 function checkMove(x, y, player) 
 {
@@ -320,7 +344,7 @@ function checkMove(x, y, player)
             if (y % 2 == 0) 
             {
                 if (x > 0 && chessboard[y - 1][x - 1] == 0) makeMove++; //parzysty - lewo 
-                if (x < chessboard[y].length - 1 && chessboard[y - 1][x] == 0) makeMove++; //parzysty - prawo
+                if (x < chessboard[y].length - 1 && chessboard[y - 1][x + 1] == 0) makeMove++; //parzysty - prawo
             } 
             else 
             {
@@ -328,22 +352,22 @@ function checkMove(x, y, player)
                 if (x < chessboard[y].length - 1 && chessboard[y - 1][x + 1] == 0) makeMove++; // nieparzysty - prawo
             }
         }
-    } else 
+    } 
+    else 
     {
         if (y < chessboard.length - 1) 
         {
             if (y % 2 == 0) 
             {
-                if (x < chessboard[y].length - 1 && chessboard[y + 1][x] == 0) makeMove++; // parzystyw - prawo
-                if (x > 0 && chessboard[y + 1][x - 1] == 0) makeMove++; // parzysty - lewo
+                if (x > 0 && chessboard[y + 1][x - 1] == 0) makeMove++; // parzystyw - lewo
+                if (x < chessboard[y].length - 1 && chessboard[y + 1][x + 1] == 0) makeMove++; // parzysty - prawo
             } 
             else 
             {
+                if (x > 0 && chessboard[y + 1][x] == 0) makeMove++; //nieparzysty - lewo
                 if (x < chessboard[y].length - 1 && chessboard[y + 1][x + 1] == 0) makeMove++; //nieparzysty - prawo
-                if (x > 0 && chessboard[y + 1][x] == 0) makeMove++; // nieparzysty - lewo
             }
         }
     }
     return makeMove;
 }
-
