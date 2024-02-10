@@ -46,12 +46,12 @@ class Game
             {
                 if (this.selectedElement.dataset.y - element.dataset.y == 2)
                 {
-                    deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) - 1);
+                    this.deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) - 1);
                     this.isGameOver()
                 }
                 else
                 {
-                    deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) + 1);
+                    this.deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) + 1);
                     this.isGameOver()
             
                 }
@@ -61,12 +61,12 @@ class Game
             {
                 if (this.selectedElement.dataset.y - element.dataset.y == 2)
                 {
-                    deleteOpponent(this.selectedElement.dataset.x, parseInt(this.selectedElement.dataset.y) - 1);
+                    this.deleteOpponent(this.selectedElement.dataset.x, parseInt(this.selectedElement.dataset.y) - 1);
                     this.isGameOver()
                 }
                 else
                 {
-                    deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) + 1);
+                    this.deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) + 1);
                     this.isGameOver()
             
                 }
@@ -78,12 +78,12 @@ class Game
             {
                 if (this.selectedElement.dataset.y - element.dataset.y == 2)
             {
-                deleteOpponent(this.selectedElement.dataset.x, parseInt(this.selectedElement.dataset.y) - 1);
+                this.deleteOpponent(this.selectedElement.dataset.x, parseInt(this.selectedElement.dataset.y) - 1);
                 this.isGameOver()
             }
             else
             {
-                deleteOpponent(this.selectedElement.dataset.x, parseInt(this.selectedElement.dataset.y) + 1);
+                this.deleteOpponent(this.selectedElement.dataset.x, parseInt(this.selectedElement.dataset.y) + 1);
                 this.isGameOver()
             }
            }
@@ -91,12 +91,12 @@ class Game
                 {
                     if (this.selectedElement.dataset.y - element.dataset.y == 2)
                     {
-                        deleteOpponent(parseInt(this.selectedElement.dataset.x) +1, parseInt(this.selectedElement.dataset.y) - 1);
+                        this.deleteOpponent(parseInt(this.selectedElement.dataset.x) +1, parseInt(this.selectedElement.dataset.y) - 1);
                         this.isGameOver()
                     }
                     else
                     {
-                        deleteOpponent(parseInt(this.selectedElement.dataset.x) +1, parseInt(this.selectedElement.dataset.y) + 1);
+                        this.deleteOpponent(parseInt(this.selectedElement.dataset.x) +1, parseInt(this.selectedElement.dataset.y) + 1);
                         this.isGameOver()
                     }  
                 }   
@@ -110,12 +110,12 @@ class Game
             {
                 if (this.selectedElement.dataset.y - element.dataset.y == 2)
                 {
-                    deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) - 1);
+                    this.deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) - 1);
                     this.isGameOver()
                 }
                 else
                 {
-                    deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) + 1);
+                    this.deleteOpponent(parseInt(this.selectedElement.dataset.x) - 1, parseInt(this.selectedElement.dataset.y) + 1);
                     this.isGameOver()
             
                 }
