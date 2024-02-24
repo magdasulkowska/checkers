@@ -109,12 +109,12 @@ class Game
             {
                 if (this.chessborad.getSelectedY() - element.dataset.y == 2)
                 {
-                    this.deleteOpponent(parseInt(this.chessborad.getSelectedX()) - 1, parseInt(this.chessborad.getSelectedY()) - 1);
+                    this.chessboard.removePawn(parseInt(this.chessborad.getSelectedX()) - 1, parseInt(this.chessborad.getSelectedY()) - 1);
                     this.isGameOver()
                 }
                 else
                 {
-                    this.deleteOpponent(parseInt(this.chessborad.getSelectedX()) - 1, parseInt(this.chessborad.getSelectedY()) + 1);
+                    this.chessboard.removePawn(parseInt(this.chessborad.getSelectedX()) - 1, parseInt(this.chessborad.getSelectedY()) + 1);
                     this.isGameOver()
             
                 }
@@ -122,7 +122,7 @@ class Game
             }
             else
             {
-                deleteOpponent(this.chessborad.getSelectedX(), parseInt(this.chessborad.getSelectedY()) + 1);
+                this.chessboard.removePawn(this.chessborad.getSelectedX(), parseInt(this.chessborad.getSelectedY()) + 1);
                 this.isGameOver()
             }
            }
@@ -132,12 +132,12 @@ class Game
             {
                 if (this.chessborad.getSelectedY() - element.dataset.y == 2)
             {
-                deleteOpponent(this.chessborad.getSelectedX(), parseInt(this.chessborad.getSelectedY()) + 1);
+                this.chessboard.removePawn(this.chessborad.getSelectedX(), parseInt(this.chessborad.getSelectedY()) + 1);
                 this.isGameOver()
             }
             else
             {
-                deleteOpponent(this.chessborad.getSelectedX(), parseInt(this.chessborad.getSelectedY()) + 1);
+                this.chessboard.removePawn(this.chessborad.getSelectedX(), parseInt(this.chessborad.getSelectedY()) + 1);
                 this.isGameOver()
             }
            }
@@ -145,12 +145,12 @@ class Game
            {
             if (this.chessborad.getSelectedY() - element.dataset.y == 2)
             {
-                deleteOpponent(this.chessborad.getSelectedX(), parseInt(this.chessborad.getSelectedY()) - 1);
+                this.chessboard.removePawn(this.chessborad.getSelectedX(), parseInt(this.chessborad.getSelectedY()) - 1);
                 this.isGameOver()
             }
             else
             {
-                deleteOpponent(parseInt(this.chessborad.getSelectedX()) + 1, parseInt(this.chessborad.getSelectedY()) + 1);
+                this.chessboard.removePawn(parseInt(this.chessborad.getSelectedX()) + 1, parseInt(this.chessborad.getSelectedY()) + 1);
                 this.isGameOver()
             
            }
