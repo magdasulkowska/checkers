@@ -1,112 +1,117 @@
-class Chessboard
-{
-    constructor ()
-    {
-        this.board = 
-        [
-    [new BlackPawn(),new BlackPawn(),new BlackPawn(),new BlackPawn()],
-    [new BlackPawn(),new BlackPawn(),new BlackPawn(),new BlackPawn()],
-    [new BlackPawn(),new BlackPawn(),new BlackPawn(),new BlackPawn()],
-    [null,null,null,null],
-    [null,null,null,null], 
-    [new WhitePawn(),new WhitePawn(),new WhitePawn(),new WhitePawn()],
-    [new WhitePawn(),new WhitePawn(),new WhitePawn(),new WhitePawn()],
-    [new WhitePawn(),new WhitePawn(),new WhitePawn(),new WhitePawn()]
-        ];
+class Chessboard {
+    constructor(elements, images) {
+        this.board =
+            [
+                [new Square(elements[0]), new Square(elements[1]), new Square(elements[2]), new Square(elements[3])],
+                [new Square(elements[0]), new Square(elements[1]), new Square(elements[2]), new Square(elements[3])],
+                [new Square(elements[0]), new Square(elements[1]), new Square(elements[2]), new Square(elements[3])],
+                [new Square(elements[0]), new Square(elements[1]), new Square(elements[2]), new Square(elements[3])],
+                [new Square(elements[0]), new Square(elements[1]), new Square(elements[2]), new Square(elements[3])],
+                [new Square(elements[0]), new Square(elements[1]), new Square(elements[2]), new Square(elements[3])],
+                [new Square(elements[0]), new Square(elements[1]), new Square(elements[2]), new Square(elements[3])],
+                [new Square(elements[0]), new Square(elements[1]), new Square(elements[2]), new Square(elements[3])],
+            ];
+            this.board[0][0].setPawn(new BlackPawn(images[0]));
+            this.board[0][1].setPawn(new BlackPawn(images[1]));
+            this.board[0][2].setPawn(new BlackPawn(images[2]));
+            this.board[0][3].setPawn(new BlackPawn(images[3]));
+            this.board[1][0].setPawn(new BlackPawn(images[4]));
+            this.board[1][1].setPawn(new BlackPawn(images[5]));
+            this.board[1][2].setPawn(new BlackPawn(images[6]));
+            this.board[1][3].setPawn(new BlackPawn(images[7]));
+            this.board[2][0].setPawn(new BlackPawn(images[8]));
+            this.board[2][1].setPawn(new BlackPawn(images[9]));
+            this.board[2][2].setPawn(new BlackPawn(images[10]));
+            this.board[2][3].setPawn(new BlackPawn(images[11]));
+
+            this.board[5][0].setPawn(new WhitePawn(images[12]));
+            this.board[5][1].setPawn(new WhitePawn(images[13]));
+            this.board[5][2].setPawn(new WhitePawn(images[14]));
+            this.board[5][3].setPawn(new WhitePawn(images[15]));
+            this.board[6][0].setPawn(new WhitePawn(images[16]));
+            this.board[6][1].setPawn(new WhitePawn(images[17]));
+            this.board[6][2].setPawn(new WhitePawn(images[18]));
+            this.board[6][3].setPawn(new WhitePawn(images[19]));
+            this.board[7][0].setPawn(new WhitePawn(images[20]));
+            this.board[7][1].setPawn(new WhitePawn(images[21]));
+            this.board[7][2].setPawn(new WhitePawn(images[22]));
+            this.board[7][3].setPawn(new WhitePawn(images[23]));
+
+
+
+            this.selectedSquare = null;
+            this.selectedX = -1;
+            this.selectedY = -1;
+
     }
 
-    getPawn(x, y)
+    getSquare(x, y) 
     {
         return this.board[y][x];
     }
 
-    movePawn(x, y, newX, newY)
+    movePawn(x, y, newX, newY) 
     {
-        const pawn = this.getPawn(x, y);
-        this.board[newY][newX] = pawn;
-        this.board[y][x] = null;
+        const square = this.getSquare(x, y);
+        const square2 = this.getSquare(newX, newY);
+        square2.setPawn(square.getPawn());
+        square.removePawn();
+        
     }
 
-    removePawn(x, y)
+    removePawn(x, y) 
     {
-        this.board[y][x] = null;
+        const square = this.getSquare(x, y);
+        square.removePawn();
     }
 
-    isGameOver() 
+    selectSquare(x, y)
     {
-        let player1 = 0
-        let player2 = 0;
-        let makeMovePlayer1 = 0
-        let makeMovePlayer2 = 0;
-
-        for (let y = 0; y < this.board.length; y++) 
+        if(this.selectedSquare != null)
         {
-            for (let x = 0; x < this.board[y].length; x++) 
-            {
-                if (this.board[y][x] == 1) 
-                {
-                    player1++;
-                    makeMovePlayer1 += this.checkMove(x, y, 1);
-                } 
-                else if (this.board[y][x] == 2) 
-                {
-                    player2++;
-                    makeMovePlayer2 += this.checkMove(x, y, 2);
-                }
-            }
+            this.selectedSquare.unSelect();
         }
-
-        if (player1 === 0 || player2 === 0) 
-        {
-            alert("Koniec gry: Wszystkie pionki jednego z graczy zostały zbite.");
-            return true;
-        }
-
-        if ((currentPlayer === 1 && makeMovePlayer1 === 0) || (currentPlayer === 2 && makeMovePlayer2 === 0)) 
-        {
-            alert(`Koniec gry: Gracz ${currentPlayer} nie ma dostępnych ruchów.`);
-            return true;
-        }
-
-        return false;
+        this.selectedSquare = this.getSquare(x, y);
+        this.selectedSquare.select();
+        this.selectedX = x;
+        this.selectedY = y;
     }
 
-    checkMove(x, y, player) 
+    resetSelection()
     {
-    var makeMove = 0;
+        if(this.selectedSquare != null) 
+        {
+            this.selectedSquare.unSelect(); 
+            this.selectedSquare = null; 
+        }
 
-    if (player == 1) 
-    {
-        if (y > 0) 
-        {
-            if (y % 2 == 0) 
-            {
-                if (x > 0 && this.board[y - 1][x - 1] == 0) makeMove++; //parzysty - lewo 
-                if (x < this.board[y].length - 1 && this.board[y - 1][x + 1] == 0) makeMove++; //parzysty - prawo
-            } 
-            else 
-            {
-                if (x > 0 && this.board[y - 1][x] == 0) makeMove++; // nieparzysty - lewo
-                if (x < this.board[y].length - 1 && this.board[y - 1][x + 1] == 0) makeMove++; // nieparzysty - prawo
-            }
-        }
-    } 
-    else 
-    {
-        if (y < this.board.length - 1) 
-        {
-            if (y % 2 == 0) 
-            {
-                if (x > 0 && this.board[y + 1][x - 1] == 0) makeMove++; // parzystyw - lewo
-                if (x < this.board[y].length - 1 && this.board[y + 1][x + 1] == 0) makeMove++; // parzysty - prawo
-            } 
-            else 
-            {
-                if (x > 0 && this.board[y + 1][x] == 0) makeMove++; //nieparzysty - lewo
-                if (x < this.board[y].length - 1 && this.board[y + 1][x + 1] == 0) makeMove++; //nieparzysty - prawo
-            }
-        }
     }
-    return makeMove;
+
+    getSelectedSquare()
+    {
+        return this.selectedSquare;
+    }
+
+    getSelectedX()
+    {
+        return this.selectedX;
+    }
+
+    getSelectedY()
+    {
+        return this.selectedY;
+    }
+
+    getBoardLengthY() 
+    {
+        return this.board.length;
+    }
+
+    getBoardLengthX(y) 
+    {
+        if (y >= 0 && y < this.board.length) 
+        {
+            return this.board[y].length;
+        } 
     }
 }

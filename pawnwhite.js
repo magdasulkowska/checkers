@@ -1,7 +1,7 @@
 class PawnWhite extends Pawn 
 {
-    constructor(chessboard, x, y) 
+    getPlayer()
     {
-        super(chessboard, x, y, 1); 
+        return 1;
     }
 }
